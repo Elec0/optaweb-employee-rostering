@@ -17,11 +17,11 @@ if NOT %errorlevel% == 0 (
 for /f "delims=[] tokens=2" %%a in ('ping -4 -n 1 %ComputerName% ^| findstr [') do set NetworkIP=%%a
 echo Network IP: %NetworkIP%
 
-docker container inspect optaweb/windows -f "{{.State.Status}}" > nul
+docker container inspect optaweb-full -f "{{.State.Status}}" > nul
 if NOT %errorlevel% == 0 (
-    echo Run optaweb/windows container
-    docker run --name optaweb/windows --add-host=host:%NetworkIP% -p 8080:8080 -it -e QUARKUS_PROFILE=production optaweb/windows
+    echo Run optaweb-full container
+    docker run --name optaweb-full --add-host=host:%NetworkIP% -p 8080:8080 -it -e QUARKUS_PROFILE=production optaweb/windows
 ) else (
-    echo optaweb/windows container exists, start it
-    docker start optaweb/windows
+    echo optaweb-full container exists, start it
+    docker start optaweb-full
 )
