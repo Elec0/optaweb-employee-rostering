@@ -19,11 +19,6 @@
       <source>src/main/resources/README.txt</source>
       <outputDirectory/>
     </file>
-    <file>
-      <source>../runLocally.sh</source>
-      <outputDirectory>bin</outputDirectory>
-      <filtered>true</filtered>
-    </file>
   </files>
   <fileSets>
     <fileSet><!-- Note: going outside the module dir is bad, but it is not fetching generated files -->
