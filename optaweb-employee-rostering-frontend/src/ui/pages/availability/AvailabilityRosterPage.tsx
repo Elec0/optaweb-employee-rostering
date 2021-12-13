@@ -175,6 +175,9 @@ export class AvailabilityRosterPage extends React.Component<Props, State> {
 
     onUpdateAvailabilityRoster(urlProps: AvailabilityRosterUrlProps) {
         if (this.props.rosterState !== null) {
+            // TODO: Update this to use week/month/agenda
+            // Then use that to specify the start and end dates, which should fetch the correct data for 
+            // whatever calendar is currently being displayed
             const startDate = moment(urlProps.week || moment(this.props.rosterState.firstDraftDate)).startOf('week').toDate();
             const endDate = moment(startDate).endOf('week').toDate();
             const employee = this.props.allEmployeeList
