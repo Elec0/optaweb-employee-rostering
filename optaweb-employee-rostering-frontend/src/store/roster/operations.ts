@@ -434,17 +434,20 @@ SetAvailabilityRosterIsLoadingAction | SetAvailabilityRosterViewAction> = params
   if (tenantId < 0) {
     return Promise.resolve();
   }
+
   const fromDateAsString = serializeLocalDate(params.fromDate);
   const toDateAsString = serializeLocalDate(moment(params.toDate).add(1, 'day').toDate());
   dispatch(actions.setAvailabilityRosterIsLoading(true));
   lastCalledAvailabilityRoster = getAvailabilityRosterFor;
   lastCalledAvailabilityRosterArgs = params;
+
   return client.post<KindaAvailabilityRosterView>(`/tenant/${tenantId}/roster/availabilityRosterView/for?`
-    + `&startDate=${fromDateAsString}&endDate=${toDateAsString}`,
-  params.employeeList).then((newAvailabilityRosterView) => {
-    const availabilityRosterView = convertKindaAvailabilityRosterViewToAvailabilityRosterView(
+    + `&startDate=${fromDateAsString}&endDate=${toDateAsString}`, params.employeeList)
+      .then((newAvailabilityRosterView) => {
+      const availabilityRosterView = convertKindaAvailabilityRosterViewToAvailabilityRosterView(
       newAvailabilityRosterView,
     );
+
     dispatch(actions.setAvailabilityRosterView(availabilityRosterView));
     dispatch(actions.setAvailabilityRosterIsLoading(false));
   });

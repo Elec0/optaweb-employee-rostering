@@ -112,18 +112,18 @@ export const ScoreDisplay: React.FC<ScoreDisplayProps> = (props) => {
   return (
     <span>
       <Chip isReadOnly>
-        {t('hardScore', { hardScore })}
+        {t('hardScore', "Hard: 0", { hardScore })}
       </Chip>
       <Chip isReadOnly>
-        {t('mediumScore', { mediumScore })}
+        {t('mediumScore', "Medium: 0", { mediumScore })}
       </Chip>
       <Chip isReadOnly>
-        {t('softScore', { softScore })}
+        {t('softScore', "Soft: 0", { softScore })}
       </Chip>
       <Popover
         headerContent="Constraint Matches"
         bodyContent={<ConstraintMatches {...props} />}
-        boundary="viewport"
+        // boundary="viewport"
         maxWidth="800px"
         shouldClose={() => setIsOpen(false)}
         isVisible={isOpen}

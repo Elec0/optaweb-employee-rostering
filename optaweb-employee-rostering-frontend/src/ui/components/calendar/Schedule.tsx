@@ -20,7 +20,7 @@ import * as React from 'react';
 import { Calendar, momentLocalizer, EventProps } from 'react-big-calendar';
 import moment from 'moment';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import { doNothing } from 'types';
+// import { doNothing } from 'types';
 import EventWrapper from './EventWrapper';
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss';
@@ -52,6 +52,8 @@ export interface Props<T extends object> {
   popoverHeader: (event: T) => React.ReactNode;
   popoverBody: (event: T) => React.ReactNode;
   eventComponent: (props: React.PropsWithChildren<EventProps<T>>) => React.ReactNode;
+  onNavigate?: (newDate: Date, view: View, action: NavigateAction) => void;
+  onView?: (view: View) => void;
 }
 
 export function isDay(start: Date, end: Date) {
@@ -60,6 +62,7 @@ export function isDay(start: Date, end: Date) {
 }
 
 const localizer = momentLocalizer(moment);
+
 export default function Schedule<T extends object>(props: Props<T>): React.ReactElement<Props<T>> {
   const length = Math.ceil(moment(props.endDate).diff(moment(props.startDate), 'days')) + 1;
   const ref = React.useRef<HTMLElement>();
@@ -82,14 +85,17 @@ export default function Schedule<T extends object>(props: Props<T>): React.React
           ? isDay(props.startAccessor(event), props.endAccessor(event)) : false)}
         startAccessor={props.startAccessor}
         endAccessor={props.endAccessor}
-        toolbar={false}
-        view="week"
-        views={['week']}
+        defaultView={"month"} // This restores control to the Calendar object below us
+        views={['week', 'month', 'agenda']}
+
         formats={props.dateFormat ? {
           dayFormat: props.dateFormat,
         } : undefined}
-        onSelectSlot={(slotInfo: { start: string|Date; end: string|Date;
-          action: 'select'|'click'|'doubleClick'; }) => {
+
+        onSelectSlot={(slotInfo: {
+          start: string | Date; end: string | Date;
+          action: 'select' | 'click' | 'doubleClick';
+        }) => {
           if (slotInfo.action === 'select' || slotInfo.action === 'click') {
             if (isDay(moment(slotInfo.start).toDate(), moment(slotInfo.end).toDate())) {
               props.onAddEvent(moment(slotInfo.start).toDate(), moment(slotInfo.end).add(1, 'day').toDate());
@@ -99,7 +105,8 @@ export default function Schedule<T extends object>(props: Props<T>): React.React
           }
         }
         }
-        onEventDrop={(dropLocation: { event: T; start: string|Date; end: string|Date }) => {
+
+        onEventDrop={(dropLocation: { event: T; start: string | Date; end: string | Date }) => {
           if (isDay(moment(dropLocation.start).toDate(), moment(dropLocation.end).toDate())) {
             props.onUpdateEvent(dropLocation.event, moment(dropLocation.start).toDate(),
               moment(dropLocation.end).toDate());
@@ -117,7 +124,8 @@ export default function Schedule<T extends object>(props: Props<T>): React.React
               .toDate());
           }
         }}
-        onEventResize={(resizeInfo: { event: T; start: string|Date; end: string|Date }) => {
+
+        onEventResize={(resizeInfo: { event: T; start: string | Date; end: string | Date }) => {
           const origEventStart = moment(props.startAccessor(resizeInfo.event));
           const origEventEnd = moment(props.startAccessor(resizeInfo.event));
           if (isDay(moment(resizeInfo.start).toDate(), moment(resizeInfo.end).toDate())) {
@@ -131,14 +139,16 @@ export default function Schedule<T extends object>(props: Props<T>): React.React
             props.onUpdateEvent(resizeInfo.event, moment(resizeInfo.start).toDate(), moment(resizeInfo.end).toDate());
           }
         }}
-        onView={doNothing}
-        onNavigate={doNothing}
+
+        onView={props.onView}
+        onNavigate={props.onNavigate}
         timeslots={4}
         eventPropGetter={props.eventStyle}
         dayPropGetter={props.dayStyle}
         selectable
         resizable
         showMultiDayTimes
+
         components={{
           eventWrapper: (wrapperProps) => {
             const style = props.wrapperStyle(wrapperProps.event);
