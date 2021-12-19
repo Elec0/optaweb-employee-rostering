@@ -135,8 +135,8 @@ export class ShiftRosterPage extends React.Component<Props, State> {
         if (this.props.rosterState) {
             const spot = this.props.allSpotList.find(s => s.name === urlProps.spot)
                 || (this.props.allSpotList[0] /* can be undefined */);
-            const startDate = moment(urlProps.week || moment(this.props.rosterState.firstDraftDate)).startOf('week').toDate();
-            const endDate = moment(startDate).endOf('week').toDate();
+            const startDate = moment(urlProps.week || moment(this.props.rosterState.firstDraftDate)).startOf('month').toDate();
+            const endDate = moment(startDate).endOf('month').toDate();
 
             if (spot) {
                 this.props.getShiftRosterFor({
@@ -338,7 +338,7 @@ export class ShiftRosterPage extends React.Component<Props, State> {
                         }}
                         noClearButton
                     />
-                    <WeekPicker
+                    {/* <WeekPicker
                         aria-label="Select Week to View"
                         value={startDate}
                         minDate={this.props.rosterState ? this.props.rosterState.firstDraftDate : undefined}
@@ -348,7 +348,7 @@ export class ShiftRosterPage extends React.Component<Props, State> {
                                 week: moment(weekStart).format('YYYY-MM-DD'),
                             });
                         }}
-                    />
+                    /> */}
                     <ScoreDisplay score={score} indictmentSummary={indictmentSummary} isSolving={this.props.isSolving} />
                     <Actions
                         actions={actions}

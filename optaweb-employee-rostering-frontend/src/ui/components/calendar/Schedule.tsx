@@ -142,13 +142,16 @@ export default function Schedule<T extends object>(props: Props<T>): React.React
 
         onView={props.onView}
         onNavigate={props.onNavigate}
-        timeslots={4}
+        // timeslots={4}
         eventPropGetter={props.eventStyle}
         dayPropGetter={props.dayStyle}
         selectable
         resizable
         showMultiDayTimes
 
+        drilldownView={"week"}
+        doShowMoreDrilldown={true}
+        
         components={{
           eventWrapper: (wrapperProps) => {
             const style = props.wrapperStyle(wrapperProps.event);

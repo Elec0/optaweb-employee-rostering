@@ -69,7 +69,7 @@ export const IndictmentIcons: React.FC<Shift> = (shift) => {
       {isPresent(shift.requiredSkillViolationList) && <SchoolIcon />}
       {isPresent(shift.rotationViolationPenaltyList) && <CalendarTimesIcon />}
       {isPresent(shift.shiftEmployeeConflictList) && <UserFriendsIcon />}
-      {isPresent(shift.unassignedShiftPenaltyList) && <ExclamationTriangleIcon />}
+      {/* {isPresent(shift.unassignedShiftPenaltyList) && <ExclamationTriangleIcon />} */}
       {isPresent(shift.unavailableEmployeeViolationList) && <UserTimesIcon />}
       {isPresent(shift.undesiredTimeslotForEmployeePenaltyList) && <UserMinusIcon />}
       {isPresent(shift.noBreakViolationList) && <AlignCenterIcon />}
@@ -378,22 +378,22 @@ const ShiftEvent: React.FC<EventProps<Shift>> = props => (
     style={{
       display: 'grid',
       gridTemplateColumns: '1fr',
-      gridTemplateRows: 'calc(100% - 60px) 55px',
+      // gridTemplateRows: 'calc(100% - 60px) 55px',
       gridRowGap: '5px',
-      height: '100%',
+      // height: '100%',
       width: '100%',
     }}
   >
     <div
       style={{
         display: 'flex',
-        flexDirection: 'column',
+        // flexDirection: 'column',
       }}
     >
       {props.event.pinnedByUser && <ThumbTackIcon />}
       <span style={{
-        writingMode: 'vertical-rl',
-        transform: 'rotate(180deg)',
+        // writingMode: 'vertical-rl',
+        // transform: 'rotate(-90deg)',
       }}
       >
         {`${props.title} ${props.event.requiredSkillSet.length
@@ -403,6 +403,7 @@ const ShiftEvent: React.FC<EventProps<Shift>> = props => (
             ? `(was ${props.event.originalEmployee.name})` : ''}`}
       </span>
     </div>
+    {/* The icons in the events */}
     <IndictmentIcons {...props.event} />
   </span>
 );

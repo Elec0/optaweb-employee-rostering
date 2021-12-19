@@ -175,11 +175,10 @@ export class AvailabilityRosterPage extends React.Component<Props, State> {
 
     onUpdateAvailabilityRoster(urlProps: AvailabilityRosterUrlProps) {
         if (this.props.rosterState !== null) {
-            // TODO: Update this to use week/month/agenda
-            // Then use that to specify the start and end dates, which should fetch the correct data for 
-            // whatever calendar is currently being displayed
-            const startDate = moment(urlProps.week || moment(this.props.rosterState.firstDraftDate)).startOf('week').toDate();
-            const endDate = moment(startDate).endOf('week').toDate();
+            // Grab the entire month's data, then we'll only display a week of it if needed
+            // Yeah it's less efficient but idc
+            const startDate = moment(urlProps.week || moment(this.props.rosterState.firstDraftDate)).startOf('month').toDate();
+            const endDate = moment(startDate).endOf('month').toDate();
             const employee = this.props.allEmployeeList
                 .find(e => e.name === urlProps.employee) || this.props.allEmployeeList[0];
             if (employee) {
@@ -412,7 +411,7 @@ export class AvailabilityRosterPage extends React.Component<Props, State> {
                         noClearButton
                     />
 
-                    <WeekPicker
+                    {/* <WeekPicker
                         aria-label="Select Week to View"
                         value={startDate}
                         onChange={(weekStart) => {
@@ -421,7 +420,7 @@ export class AvailabilityRosterPage extends React.Component<Props, State> {
                                 week: moment(weekStart).format('YYYY-MM-DD'),
                             });
                         }}
-                    />
+                    /> */}
 
                     <ScoreDisplay score={score} indictmentSummary={indictmentSummary} isSolving={this.props.isSolving} />
 
@@ -486,12 +485,6 @@ export class AvailabilityRosterPage extends React.Component<Props, State> {
                                 ...urlProps,
                                 week: moment(newDate).format('YYYY-MM-DD'),
                             });
-                        }
-                    }
-
-                    onView={
-                        (view) => {
-                            console.log(view);
                         }
                     }
 
