@@ -1,5 +1,8 @@
+@echo off
 
-@REM call java -jar optaweb-employee-rostering-standalone\target\quarkus-app\quarkus-run.jar
+echo Start PostgreSQL container
+docker start optaweb-db
+
 cd ..
 pushd .
 cd optaweb-employee-rostering-frontend

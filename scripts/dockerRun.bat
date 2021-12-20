@@ -10,7 +10,7 @@ if NOT %errorlevel% == 0 (
     echo Run PostgreSQL container
     docker run --name optaweb-db -e POSTGRES_PASSWORD=optaweb-db -e POSTGRES_DB=optaweb -d -p 5432:5432 postgres
 ) else (
-    echo PostgreSQL contianer exists, start it
+    echo PostgreSQL container exists, start it
     docker start optaweb-db
 )
 
