@@ -19,6 +19,7 @@ import * as React from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './ReactBigCalendarOverrides.css';
 import { Popover } from '@patternfly/react-core';
+import { getRandomColor } from '../ColorPicker';
 
 // Workaround for https://github.com/intljusticemission/react-big-calendar/issues/1397,
 // and helps with styling the event component and allows the popup to show even if you click
@@ -60,6 +61,7 @@ export default function EventWrapper(props: React.PropsWithChildren<{
         bodyContent={props.popoverBody}
         appendTo={props.boundary.current}
         zIndex={1000001}
+        className={getRandomColor()}
       >
         {props.children as React.ReactElement}
       </Popover>

@@ -1,3 +1,5 @@
+import moment, { Moment } from "moment";
+
 /*
  * Copyright 2019 Red Hat, Inc. and/or its affiliates.
  *
@@ -16,4 +18,11 @@
 export function modulo(n: number, base: number) {
   const positiveBase = Math.abs(base);
   return ((n % positiveBase) + positiveBase) % positiveBase;
+}
+
+
+export function getCalendarDateRange(firstDate: string | Moment): [Date, Date] {
+  const startDate = moment(firstDate).startOf('month').startOf('week').toDate();
+  const endDate = moment(firstDate).endOf('month').endOf('week').toDate();
+  return [startDate, endDate];
 }

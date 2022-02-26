@@ -44,6 +44,7 @@ import AvailabilityEvent, { AvailabilityPopoverHeader, AvailabilityPopoverBody }
 import EditAvailabilityModal from './EditAvailabilityModal';
 import ShiftEvent, { ShiftPopupHeader, ShiftPopupBody } from '../shift/ShiftEvent';
 import EditShiftModal from '../shift/EditShiftModal';
+import { getCalendarDateRange } from 'util/MathUtils';
 
 interface StateProps {
     tenantId: number;
@@ -172,13 +173,12 @@ export class AvailabilityRosterPage extends React.Component<Props, State> {
             firstLoad: true,
         };
     }
-
+    
     onUpdateAvailabilityRoster(urlProps: AvailabilityRosterUrlProps) {
         if (this.props.rosterState !== null) {
             // Grab the entire month's data, then we'll only display a week of it if needed
             // Yeah it's less efficient but idc
-            const startDate = moment(urlProps.week || moment(this.props.rosterState.firstDraftDate)).startOf('month').toDate();
-            const endDate = moment(startDate).endOf('month').toDate();
+            let [startDate, endDate] = getCalendarDateRange(urlProps.week || moment(this.props.rosterState.firstDraftDate));
             const employee = this.props.allEmployeeList
                 .find(e => e.name === urlProps.employee) || this.props.allEmployeeList[0];
             if (employee) {

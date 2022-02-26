@@ -52,7 +52,7 @@ export const Actions: FC<Props & SizeMeProps> = ({ actions, size }) => {
     <span style={{ display: 'grid', gridTemplateColumns: '1fr auto' }}>
       <span style={{ width: '100%' }} />
       <span>
-        {actionsOnButtons.map(a => (
+        {actions.map(a => (
           <Button
             key={a.name}
             style={{ margin: '5px' }}
@@ -64,7 +64,7 @@ export const Actions: FC<Props & SizeMeProps> = ({ actions, size }) => {
           </Button>
         ))
         }
-        {actionsInDropdown.length > 0 && (
+        {/*actionsInDropdown.length > 0 && (
           <Dropdown
             onSelect={(e) => {
               actionsInDropdown.filter(a => e && a.name === e.currentTarget.innerText).forEach(a => a.action());
@@ -76,7 +76,7 @@ export const Actions: FC<Props & SizeMeProps> = ({ actions, size }) => {
             isPlain
             dropdownItems={dropdownItems}
           />
-        )}
+        )*/}
       </span>
     </span>
   );

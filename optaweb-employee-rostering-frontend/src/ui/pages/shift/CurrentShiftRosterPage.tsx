@@ -42,6 +42,7 @@ import { IndictmentSummary } from 'domain/indictment/IndictmentSummary';
 import ShiftEvent, { getShiftColor, ShiftPopupHeader, ShiftPopupBody } from './ShiftEvent';
 import EditShiftModal from './EditShiftModal';
 import ExportScheduleModal from './ExportScheduleModal';
+import { getCalendarDateRange } from 'util/MathUtils';
 
 interface StateProps {
     tenantId: number;
@@ -133,9 +134,7 @@ export class ShiftRosterPage extends React.Component<Props, State> {
         if (this.props.rosterState) {
             const spot = this.props.allSpotList.find(s => s.name === urlProps.spot)
                 || (this.props.allSpotList[0] /* can be undefined */);
-            const startDate = moment(urlProps.week || new Date()).startOf('month').toDate();
-            const endDate = moment(startDate).endOf('month').toDate();
-
+            let [startDate, endDate] = getCalendarDateRange(urlProps.week || moment(new Date()));
             if (spot) {
                 this.props.getShiftRosterFor({
                     fromDate: startDate,
