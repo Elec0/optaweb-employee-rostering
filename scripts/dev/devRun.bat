@@ -3,7 +3,7 @@
 echo Start PostgreSQL container
 docker start optaweb-db
 
-cd ..
+cd ..\..
 pushd .
 cd optaweb-employee-rostering-frontend
 start "" npm start

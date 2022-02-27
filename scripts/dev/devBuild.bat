@@ -1,5 +1,5 @@
 @REM Maven
-pushd ..
+pushd ..\..
 mvn clean install -DskipTests -DskipITs -D"quarkus.profile"=postgres
 
 popd

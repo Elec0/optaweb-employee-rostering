@@ -1,5 +1,7 @@
 @echo off
 
+pushd ..\..
+
 @REM Figure out if we should build the postgres image
 docker image inspect postgres -f "{{.Os}}" 1> nul
 if NOT %errorlevel% == 0 (
@@ -19,8 +21,8 @@ echo Create buildx image
 docker buildx create --use --name larger_log --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=50000000 1> nul
 
 
-pushd .
-cd ..
 echo Build Employee Rostering image
 docker buildx build --load -t optaweb/windows \\?\%CD%
+set er=%errorlevel%
 popd
+exit /b %er%
