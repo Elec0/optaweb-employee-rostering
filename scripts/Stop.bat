@@ -1,4 +1,5 @@
 @echo off
+SETLOCAL ENABLEDELAYEDEXPANSION
 
 call dev/stopAllContainers.bat
 

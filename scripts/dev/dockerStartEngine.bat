@@ -1,4 +1,5 @@
-@echo off
+@echo on
+SETLOCAL ENABLEDELAYEDEXPANSION
 
 @REM See if we can run as admin, since docker service needs that to run
 NET FILE 1>NUL 2>NUL
@@ -13,8 +14,5 @@ echo Done, docker window should be opening soon.
 exit 0
 
 :gotPrivileges
-set doc=(Resolve-Path ((Get-Item (Get-Command docker).Source).DirectoryName + '../../../')).Path + 'Docker Desktop.exe'
 @rem Check if docker is running, start it if not
-net start docker
-net start com.docker.service
-powershell "if (!(Get-Process docker -ErrorAction SilentlyContinue)) { echo 'Done, docker window should be opening soon.'; $d_f = %doc% ; Start-Process -FilePath $d_f }"
+PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& './dockerStartEngineWait.ps1'"

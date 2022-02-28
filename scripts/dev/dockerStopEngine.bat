@@ -1,4 +1,5 @@
 @echo off
+SETLOCAL ENABLEDELAYEDEXPANSION
 
 @REM See if we can run as admin, since docker service needs that to run
 NET FILE 1>NUL 2>NUL
