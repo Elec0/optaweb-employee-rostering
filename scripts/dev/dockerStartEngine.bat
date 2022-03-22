@@ -14,5 +14,8 @@ echo Done, docker window should be opening soon.
 exit 0
 
 :gotPrivileges
+@REM We might have re-called the batch file to get here, so make sure we're in the right directory
+cd %~dp0
+
 @rem Check if docker is running, start it if not
 PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& './dockerStartEngineWait.ps1'"
