@@ -659,5 +659,6 @@ const baseProps: Props = {
   addShift: jest.fn(),
   updateShift: jest.fn(),
   removeShift: jest.fn(),
+  uploadAvailability: jest.fn(),
   ...getRouterProps<AvailabilityRosterUrlProps>('/shift', { employee: 'Employee 1', week: '2018-07-01' }),
 };

@@ -46,10 +46,11 @@ public class RosterConstraintConfiguration extends AbstractPersistable {
     public static final String CONSTRAINT_YEARLY_MINUTES_MUST_NOT_EXCEED_CONTRACT_MAXIMUM =
             "Yearly minutes must not exceed contract maximum";
     public static final String CONSTRAINT_ASSIGN_EVERY_SHIFT = "Assign every shift";
-    public static final String CONSTRAINT_EMPLOYEE_IS_NOT_ORIGINAL_EMPLOYEE = "Employee is not original employee";
+    public static final String CONSTRAINT_EMPLOYEE_IS_NOT_ORIGINAL_EMPLOYEE = "Monthly minutes must exceed contract minimum";
+    // public static final String CONSTRAINT_EMPLOYEE_IS_NOT_ORIGINAL_EMPLOYEE = "Employee is not original employee";
     public static final String CONSTRAINT_UNDESIRED_TIME_SLOT_FOR_AN_EMPLOYEE = "Undesired time slot for an employee";
     public static final String CONSTRAINT_DESIRED_TIME_SLOT_FOR_AN_EMPLOYEE = "Desired time slot for an employee";
-    public static final String CONSTRAINT_EMPLOYEE_IS_NOT_ROTATION_EMPLOYEE = "Employee is not rotation employee";
+    public static final String CONSTRAINT_EMPLOYEE_IS_NOT_ROTATION_EMPLOYEE = "Assign every employee";
 
     @NotNull
     private DayOfWeek weekStartDay = DayOfWeek.MONDAY;
@@ -71,19 +72,21 @@ public class RosterConstraintConfiguration extends AbstractPersistable {
     @ConstraintWeight(CONSTRAINT_MONTHLY_MINUTES_MUST_NOT_EXCEED_CONTRACT_MAXIMUM)
     private HardMediumSoftLongScore contractMaximumMonthlyMinutes = HardMediumSoftLongScore.ofHard(1);
     @ConstraintWeight(CONSTRAINT_YEARLY_MINUTES_MUST_NOT_EXCEED_CONTRACT_MAXIMUM)
-    private HardMediumSoftLongScore contractMaximumYearlyMinutes = HardMediumSoftLongScore.ofHard(1);
+    private HardMediumSoftLongScore contractMaximumYearlyMinutes = HardMediumSoftLongScore.ofHard(0);
 
     @ConstraintWeight(CONSTRAINT_ASSIGN_EVERY_SHIFT)
     private HardMediumSoftLongScore assignEveryShift = HardMediumSoftLongScore.ofMedium(1);
 
+    // Changing this to the hours should be mostly equal rule
     @ConstraintWeight(CONSTRAINT_EMPLOYEE_IS_NOT_ORIGINAL_EMPLOYEE)
-    private HardMediumSoftLongScore notOriginalEmployee = HardMediumSoftLongScore.ofSoft(100_000_000_000L);
+    private HardMediumSoftLongScore notOriginalEmployee = HardMediumSoftLongScore.ofSoft(1);
+    // private HardMediumSoftLongScore notOriginalEmployee = HardMediumSoftLongScore.ofSoft(100_000_000_000L);
     @ConstraintWeight(CONSTRAINT_UNDESIRED_TIME_SLOT_FOR_AN_EMPLOYEE)
     private HardMediumSoftLongScore undesiredTimeSlot = HardMediumSoftLongScore.ofSoft(20);
     @ConstraintWeight(CONSTRAINT_DESIRED_TIME_SLOT_FOR_AN_EMPLOYEE)
     private HardMediumSoftLongScore desiredTimeSlot = HardMediumSoftLongScore.ofSoft(10);
     @ConstraintWeight(CONSTRAINT_EMPLOYEE_IS_NOT_ROTATION_EMPLOYEE)
-    private HardMediumSoftLongScore notRotationEmployee = HardMediumSoftLongScore.ofSoft(50);
+    private HardMediumSoftLongScore notRotationEmployee = HardMediumSoftLongScore.ofSoft(3);
 
     @SuppressWarnings("unused")
     public RosterConstraintConfiguration() {

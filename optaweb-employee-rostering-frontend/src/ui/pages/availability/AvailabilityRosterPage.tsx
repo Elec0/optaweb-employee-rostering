@@ -19,9 +19,8 @@ import { AppState } from 'store/types';
 import { rosterOperations, rosterSelectors } from 'store/roster';
 import { spotSelectors } from 'store/spot';
 import { connect } from 'react-redux';
-import WeekPicker from 'ui/components/WeekPicker';
 import moment from 'moment';
-import { Button, EmptyState, EmptyStateVariant, Title, EmptyStateIcon, EmptyStateBody } from '@patternfly/react-core';
+import { Button, EmptyState, EmptyStateVariant, Title, EmptyStateIcon, EmptyStateBody, FileUpload } from '@patternfly/react-core';
 import TypeaheadSelectInput from 'ui/components/TypeaheadSelectInput';
 import { alert } from 'store/alert';
 import { RosterState } from 'domain/RosterState';
@@ -100,6 +99,7 @@ export interface DispatchProps {
     addEmployeeAvailability: typeof availabilityOperations.addEmployeeAvailability;
     removeEmployeeAvailability: typeof availabilityOperations.removeEmployeeAvailability;
     updateEmployeeAvailability: typeof availabilityOperations.updateEmployeeAvailability;
+    uploadAvailability: typeof availabilityOperations.uploadEmployeeAvailability;
     getAvailabilityRosterFor: typeof rosterOperations.getAvailabilityRosterFor;
     refreshAvailabilityRoster: typeof rosterOperations.refreshAvailabilityRoster;
     solveRoster: typeof rosterOperations.solveRoster;
@@ -115,6 +115,7 @@ const mapDispatchToProps: DispatchProps = {
     addEmployeeAvailability: availabilityOperations.addEmployeeAvailability,
     removeEmployeeAvailability: availabilityOperations.removeEmployeeAvailability,
     updateEmployeeAvailability: availabilityOperations.updateEmployeeAvailability,
+    uploadAvailability: availabilityOperations.uploadEmployeeAvailability,
     getAvailabilityRosterFor: rosterOperations.getAvailabilityRosterFor,
     refreshAvailabilityRoster: rosterOperations.refreshAvailabilityRoster,
     solveRoster: rosterOperations.solveRoster,
@@ -162,6 +163,28 @@ export function isAllDayAvailability(ea: EmployeeAvailability) {
 
 export type AvailabilityRosterUrlProps = UrlProps<'employee' | 'week'>;
 export class AvailabilityRosterPage extends React.Component<Props, State> {
+    importElement = (
+        <div>
+        <FileUpload
+            id="file"
+            name="file"
+            dropzoneProps={{
+            accept: '.xlsx',
+            }}
+            onChange= { (file) => {
+                if (file instanceof File) {
+                    console.log(file);
+                    this.props.uploadAvailability(file);
+                } else {
+                    // If a file with the wrong file extension is selected,
+                    // file is the empty string instead of a File object
+                    console.error("BadFileType");
+                    alert.showErrorMessage('badFileType', { fileTypes: 'Excel (.xlsx)' });
+                }
+            }}
+        />
+        </div>
+    );
     constructor(props: Props) {
         super(props);
         this.onUpdateAvailabilityRoster = this.onUpdateAvailabilityRoster.bind(this);
@@ -358,6 +381,17 @@ export class AvailabilityRosterPage extends React.Component<Props, State> {
                     }
                 }
             },
+            {
+                name: "Import availability",
+                action: () => {
+                    if (!this.state.isCreatingOrEditingShift) {
+                        this.setState({
+                            selectedAvailability: undefined,
+                            isCreatingOrEditingAvailability: true,
+                        });
+                    }
+                }
+            },
         ];
 
         // Populate the events array with elements
@@ -387,6 +421,7 @@ export class AvailabilityRosterPage extends React.Component<Props, State> {
         }
         return (
             <>
+                {this.importElement}
                 {/* Header, name picker, buttons, etc */}
                 <span
                     style={{
